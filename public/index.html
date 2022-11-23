@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blocky Kidz | Turtle</title>
+  <style>
+    *,
+    *::after,
+    *::before {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <block type="turtle_number">
+    </block>
+    <block type="turtle_text_1">
+    </block>
+    <block type="turtle_movement">
+    </block>
+    <block type="turtle_turn">
+    </block>
+    <block type="turtle_pen">
+    </block>
+    <block type="turtle_position"></block>
+    <block type="turtle_s_s_s">
+    </block>
+    <block type="turtle_text">
+    </block>
+  </xml>
+
+
+  <div style="
+				height: 100vh;
+				width: 100vw;
+				display: flex;
+				align-items: center;
+				justify-content: space-evenly;
+			">
+    <div id="blockly-div" style="height: 96vh; width: 50vw"></div>
+    <div
+      style="height: 96vh; width: 46vw; border: 1px solid rgba(0, 0, 0, 0.12);display: flex; justify-content: center; align-items: center; flex-direction: column;">
+      <button style="font-size: 18px; font-family: monospace; padding: 8px;" id="run-btn">RUN
+        CODE</button>
+      <br>
+      <canvas id="real-turtle" height="700" width="700" style="background-color:whitesmoke;"></canvas>
+    </div>
+  </div>
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+  <script src="../src/blocks/turtle.js"></script>
+  <script src="../src/generators/turtle.js"></script>
+  <script>
+    var toolbox = document.getElementById('toolbox');
+    var options = {
+      toolbox: toolbox,
+      collapse: true,
+      comments: true,
+      disable: true,
+      maxBlocks: Infinity,
+      trashcan: true,
+      horizontalLayout: false,
+      toolboxPosition: 'start',
+      css: true,
+      media: 'https://blockly-demo.appspot.com/static/media/',
+      rtl: false,
+      scrollbars: true,
+      sounds: true,
+      oneBasedIndex: true,
+      renderer: 'zelos',
+    };
+    var workspace = Blockly.inject('blockly-div', options);
+  </script>
+  <script type="text/javascript" src="https://unpkg.com/real-turtle"></script>
+  <script>
+    let btn = document.getElementById('run-btn');
+    btn.addEventListener('click', function () {
+      const canvas = document.getElementById('real-turtle');
+      const context = canvas.getContext('2d');
+      context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+      const turtle = new RealTurtle.default(canvas);
+      let code = Blockly.JavaScript.workspaceToCode(workspace);
+      console.log(code);
+      eval(code);
+      turtle.start();
+    })
+
+  </script>
+</body>
+
+</html>
